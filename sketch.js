@@ -10,8 +10,11 @@ var grupoVermelho, grupoVerde, grupoAzul;
 var placar = 0;
 var imagemGameOver, GameOver
 var imagemPause, Pause
+var imagemDegrade, degrade
 // 0 = tela inicial/ 1 = jogando/ 2 = gameover
 var estadodojogo = 0
+
+var AmericanCaptain
 
 function preload() {
   imagemDoCanhao = loadAnimation("canhao1.png","canhao2.png");
@@ -25,6 +28,8 @@ function preload() {
   imagemDaNuvem3 = loadImage("nuvem3.png");
   imagemGameOver = loadImage("game_over_PNG29.png")
   imagemPause = loadImage("pause boton.png")
+  imagemDegrade = loadImage("degrade.png")
+  AmericanCaptain = loadFont("AmericanCaptain.ttf")
 }
 
 function setup() {
@@ -50,15 +55,17 @@ function setup() {
   Pause = createSprite(365, 35, 10, 10)
   Pause.addImage("Pause", imagemPause)
   Pause.scale = 0.1
-
+  degrade = createSprite(0,-50,0,0)
+  degrade.addImage("degrade", imagemDegrade)
+  textSize(25)
+  fill(0)
+  textFont(AmericanCaptain)
 }
 
 function draw() {
   background(150,230,500);
 
-if(estadodojogo == 0)  {
-
-  textSize(20)
+if(estadodojogo == 0)  { //inicio
 
   text("Press 'Space' to start!", 104, 200)
 
@@ -67,9 +74,12 @@ if(estadodojogo == 0)  {
   if(keyDown("SPACE")) {
     estadodojogo = 1
   }
+  degrade.visible = false
+
+  GameOver.visible = false
 };
 
-if(estadodojogo == 1)  {
+if(estadodojogo == 1)  { //jogando
 
   if(keyDown(LEFT_ARROW)){
     canhao.x = canhao.x - 10;
@@ -77,6 +87,10 @@ if(estadodojogo == 1)  {
   if(keyDown(RIGHT_ARROW)){
     canhao.x = canhao.x + 10;
   }
+
+  degrade.visible = false
+
+  text("ESC", 351, 82)
 
   var selecionarBola = Math.round(random(1,3));
   
@@ -90,6 +104,17 @@ if(estadodojogo == 1)  {
     if (selecionarBola == 3 ) {
       bolaVermelha();
     }
+    if(keyDown(ESCAPE)){
+      estadodojogo = 2
+      console.log(estadodojogo)
+    }
+  }
+
+if(estadodojogo == 2){
+    degrade.visible = true
+    text("Continue", 200, 200)
+
+    GameOver.visible = false
   }
 
 
@@ -100,7 +125,7 @@ if(estadodojogo == 1)  {
 GameOver.visible = false
 };
 
-if(estadodojogo == 2)  {
+if(estadodojogo == 3)  {
 
 
 };
